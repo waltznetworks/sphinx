@@ -224,7 +224,15 @@ class SearchEnglish(SearchLanguage):
     def init(self, options):
         # type: (Dict) -> None
         self.stemmer = get_stemmer()
+        self.disable_filter = options.get("disable_filter", False)
 
     def stem(self, word):
         # type: (unicode) -> unicode
         return self.stemmer.stem(word.lower())
+
+    def word_filter(self, word):
+        # type: (unicode) -> bool
+        if self.disable_filter:
+            return True
+        else:
+            return super(SearchEnglish, self).word_filter(word)
